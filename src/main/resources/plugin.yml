@@ -1,0 +1,22 @@
+name: vExp
+version: '1.0'
+main: com.vitor.vExp
+api-version: '1.8'
+authors: [ vitor1227_OP ]
+commands:
+  xp:
+    description: Ver XP próprio ou de outro jogador.
+    usage: /xp <jogador>
+  frasco:
+    description: Crie um frasco de XP com a quantidade desejada.
+    usage: /frasco <quantidade>
+    permission: vexp.use
+
+permissions:
+  vexp.use:
+    description: Permissão para a criação de frascos de XP.
+    default: true
+  vexp.staff:
+    description: Permissão de givar XP.
+    default: false
+

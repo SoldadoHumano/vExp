@@ -44,8 +44,9 @@ Armazena **todo** o XP atual do jogador em um frasco.
 ## 🔐 Permissões
 
 Permissão | Descrição 
-`vexp.use` | Permite o uso dos comandos `/xp`, `/frasco` e ver XP de outros. (Por padrão vem como default no `plugin.yml`)
-`vexp.staff` | Permite usar comandos administrativos (`give`, `set`, `clear`). 
+`vexp.use` > Permite o uso dos comandos `/xp`, `/frasco` e ver XP de outros. (Por padrão vem como default no `plugin.yml`)
+`vexp.staff` > Permite usar comandos administrativos (`give`, `set`, `clear`). 
+`vexp.safexp` > Permite com que o jogador não perca XP ao morrer.
 
 ---
 

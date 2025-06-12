@@ -1,31 +1,136 @@
-no-permission: "&cVocê não tem permissão para usar este comando."
-only-players: "&cApenas jogadores podem usar este comando."
-usage: "&cUso correto: /xp <nick>."
-usage-xp-give: "&cUso correto: /xp give <nick> <quantia> <points | level>."
-usage-xp-clear: "&cUso correto: /xp clear <nick>"
-player-not-found: "&cJogador não encontrado ou offline."
+# Plugin messages for vExp
+
+# =====================================================
+# ⚠️ IMPORTANT NOTICE ⚠️
+#
+# - Changes to this file require a SERVER RESTART.
+# - XP bottles already created may become invalid after changes.
+#
+# DO NOT edit %placeholders% or translations will break.
+# =====================================================
+
+# Translations and explanations for English users
+# Placeholders explanation:
+# %jogador% = %player%          (the player's name)
+# %xp% = XP amount              (amount of XP involved)
+# %nivel% = level               (player's level)
+# %faltam% = XP to next level   (XP needed to level up)
+# %quantia% = amount            (generic number used)
+# %tipo% = type                 (points or level)
+
+# Minecraft Color Codes:
+# Prefer using "§" when choosing colors instead of "&" because "&" is only accepted in certain parts of the code.
+# §0 = Black
+# §1 = Dark Blue
+# §2 = Dark Green
+# §3 = Dark Aqua (Dark Cyan)
+# §4 = Dark Red
+# §5 = Dark Purple
+# §6 = Gold
+# §7 = Gray
+# §8 = Dark Gray
+# §9 = Blue
+# §a = Light Green
+# §b = Aqua (Light Cyan)
+# §c = Red
+# §d = Light Purple (Pink)
+# §e = Yellow
+# §f = White
+
+# Formatting Codes:
+# §k = Obfuscated (random characters)
+# §l = Bold
+# §m = Strikethrough
+# §n = Underline
+# §o = Italic
+# §r = Reset (resets all formatting and color)
+
+# Generic error when the user lacks permission
+no-permission: "§cVocê não tem permissão para usar este comando." # You don't have permission to use this command.
+
+# Error shown when the command is run by the console or a non-player
+only-players: "§cApenas jogadores podem usar este comando." # Only players can use this command.
+
+# General usage for /xp
+usage: "§cUso correto: /xp <nick>." # Correct usage: /xp <player>
+
+# Usage for /xp give
+usage-xp-give: "§cUso correto: /xp give <nick> <quantia> <points | level>." # Correct usage: /xp give <player> <amount> <points|level>
+
+# Usage for /xp clear
+usage-xp-clear: "§cUso correto: /xp clear <nick>" # Correct usage: /xp clear <player>
+
+# Player not found or offline
+player-not-found: "§cJogador não encontrado ou offline." # Player not found or offline.
+
+# XP info when viewing your own stats
 self-xp:
-  - "&aVocê está no nível: &e%nivel%"
-  - "&aVocê tem: &e%xp% &ade XP."
-  - "&aFaltam &e%faltam% &aPara o próximo nível."
+  - "§aVocê está no nível: §e%nivel%" # You are level: %level%
+  - "§aVocê tem: §e%xp% §ade XP." # You have: %xp% XP.
+  - "§aFaltam §e%faltam% §aPara o próximo nível." # You need %faltam% more XP to level up.
+
+# XP info for another player
 target-xp:
-  - "&e%jogador% &aestá no nível: &e%nivel%"
-  - "&e%jogador% &atem: &e%xp% &ade XP."
-  - "&aFaltam &e%faltam% &ade XP para o próximo nível."
-invalid-number: "&cDigite um número válido maior que 0."
-not-enough-xp: "&cVocê não tem XP suficiente. XP total: %xp%"
-bottle-created: "&aFrasco criado contendo: &e%xp% &ade XP."
-bottle-used: "&aVocê usou um frasco e recebeu &e%xp% &ade XP!"
-bottle-invalid: "&cEste frasco está corrompido ou inválido."
-only-players-bottle: "&cApenas jogadores podem criar frascos de XP."
-usage-frasco: "§cUso: /frasco <quantia> | /frasco all"
-xp-given-levels: "&aVocê deu &e%quantia% &aníveis de XP para &e%jogador%&a."
-xp-given-points: "&aVocê deu &e%quantia% &apontos de XP para &e%jogador%&a."
-invalid-type: "&cTipo inválido. Use 'level' ou 'points'."
-xp-cleared: "&aO XP de &e%jogador% &afoi resetado para 0."
-xp-clear-confirm: "&cTem certeza que deseja resetar o XP? Use &6/xp confirm <nick> &cpara confirmar."
-xp-clear-no-pending: "§cNão há uma confirmação pendente para este jogador."
-xp-set-success: "§aVocê definiu o XP de %jogador% para %quantia% %tipo%."
-xp-set-usage: "§cUso correto: /xp set <nick> <quantia> <level | points>"
-xp-received-levels: "&eYEAH! §aVocê recebeu %quantia% níveis de XP!"
-xp-received-points: "&eYEAH! §aVocê recebeu %quantia% pontos de XP!"
+  - "§e%jogador% §aestá no nível: §e%nivel%" # %player% is level: %level%
+  - "§e%jogador% §atem: §e%xp% §ade XP." # %player% has: %xp% XP.
+  - "§aFaltam §e%faltam% §ade XP para o próximo nível." # %faltam% XP left to next level.
+
+# Number is invalid or less than 1
+invalid-number: "§cDigite um número válido maior que 0." # Enter a valid number greater than 0.
+
+# Not enough XP to perform the action
+not-enough-xp: "§cVocê não tem XP suficiente. XP total: %xp%" # Not enough XP. Total XP: %xp%
+
+# Display name of the XP bottle
+bottle-displayname: "§aFrasco de XP" # XP Bottle
+
+# Lore line showing the amount stored
+bottle-lore-value: "§eQuantia armazenada: §f%amount%" # Stored amount: %amount%
+
+# Lore line showing who created the bottle
+bottle-lore-created-by: "§6Criado por: §b%player%" # Bottle created by: %player%
+
+# Message when bottle is successfully created
+bottle-created: "§aFrasco criado contendo: §e%xp% §ade XP." # Bottle created with: %xp% XP.
+
+# Message when bottle is used
+bottle-used: "§aVocê usou um frasco e recebeu §e%xp% §ade XP!" # You used a bottle and received: %xp% XP!
+
+# Invalid or corrupted bottle
+bottle-invalid: "§cEste frasco está corrompido ou inválido." # This bottle is corrupted or invalid.
+
+# Only players can use the /frasco command
+only-players-bottle: "§cApenas jogadores podem criar frascos de XP." # Only players can create XP bottles.
+
+# Usage for /frasco command
+usage-frasco: "§cUso: /frasco <quantia> | /frasco all" # Usage: /frasco <amount> | /frasco all
+
+# Message shown when XP is given (levels)
+xp-given-levels: "§aVocê deu §e%quantia% §aníveis de XP para §e%jogador%§a." # You gave %quantia% XP levels to %jogador%.
+
+# Message shown when XP is given (points)
+xp-given-points: "§aVocê deu §e%quantia% §apontos de XP para §e%jogador%§a." # You gave %quantia% XP points to %jogador%.
+
+# Invalid type provided in command
+invalid-type: "§cTipo inválido. Use 'level' ou 'points'." # Invalid type. Use 'level' or 'points'.
+
+# XP cleared successfully
+xp-cleared: "§aO XP de §e%jogador% §afoi resetado para 0." # %jogador%'s XP has been reset to 0.
+
+# Confirmation prompt for XP clear
+xp-clear-confirm: "§cTem certeza que deseja resetar o XP? Use §6/xp confirm <nick> §cpara confirmar." # Are you sure you want to reset XP? Use /xp confirm <player> to confirm.
+
+# No pending confirmation found
+xp-clear-no-pending: "§cNão há uma confirmação pendente para este jogador." # No pending confirmation for this player.
+
+# XP set success
+xp-set-success: "§aVocê definiu o XP de %jogador% para %quantia% %tipo%." # You set %jogador%'s XP to %quantia% %tipo%.
+
+# Usage for /xp set
+xp-set-usage: "§cUso correto: /xp set <nick> <quantia> <level | points>" # Usage: /xp set <player> <amount> <level|points>
+
+# Player received levels
+xp-received-levels: "§eYEAH! §aVocê recebeu %quantia% níveis de XP!" # YEAH! You received %quantia% XP levels!
+
+# Player received points
+xp-received-points: "§eYEAH! §aVocê recebeu %quantia% pontos de XP!" # YEAH! You received %quantia% XP points!

@@ -1,0 +1,7 @@
+# Worlds where players won't lose XP upon death
+worlds:
+  - spawn
+  - example
+
+# Show the player's nickname in the XP bottle's lore
+allownicknames: true

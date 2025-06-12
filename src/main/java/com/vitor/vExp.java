@@ -3,6 +3,7 @@ package com.vitor;
 import org.bukkit.Color;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.*;
@@ -23,24 +25,33 @@ import java.util.*;
 public final class vExp extends JavaPlugin implements Listener, CommandExecutor {
 
     public FileConfiguration messages;
+
     private Set<UUID> pendingConfirmations = new HashSet<>();
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         saveResource("messages.yml", false);
 
         File messageFile = new File(getDataFolder(), "messages.yml");
         messages = YamlConfiguration.loadConfiguration(messageFile);
 
-        Bukkit.getPluginManager().registerEvents(this, this);
-        getCommand("xp").setExecutor(this);
-        getCommand("frasco").setExecutor(this);
-        getLogger().info(ChatColor.GREEN + getMessage("plugin-enabled"));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getPluginManager().registerEvents(vExp.this, vExp.this);
+                getCommand("xp").setExecutor(vExp.this);
+                getCommand("frasco").setExecutor(vExp.this);
+
+                System.out.println("vExp loaded successfully!");
+                System.out.println("Worlds found: " + Bukkit.getWorlds());
+            }
+        }.runTaskLater(this, 10L);
     }
 
     @Override
     public void onDisable() {
-        getLogger().info(Color.RED + "vExp Desabilitado!");
+        System.out.println("vExp unloaded!");
     }
 
     private String getMessage(String path) {
@@ -321,10 +332,18 @@ public final class vExp extends JavaPlugin implements Listener, CommandExecutor 
     private void createXpBottle(Player player, int amount) {
         ItemStack bottle = new ItemStack(Material.EXP_BOTTLE);
         ItemMeta meta = bottle.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + "Frasco de XP");
+
+        String displayName = getMessage("bottle-displayname");
+        meta.setDisplayName(displayName);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.YELLOW + "Quantia armazenada: " + ChatColor.WHITE + amount);
+        lore.add("");
+        lore.add(getMessage("bottle-lore-value").replace("%amount%", String.valueOf(amount)));
+
+        if (getConfig().getBoolean("allownicknames", false)) {
+            lore.add(getMessage("bottle-lore-created-by").replace("%player%", player.getName()));
+        }
+
         meta.setLore(lore);
         bottle.setItemMeta(meta);
         player.getInventory().addItem(bottle);
@@ -383,10 +402,20 @@ public final class vExp extends JavaPlugin implements Listener, CommandExecutor 
         if (item.getType() != Material.EXP_BOTTLE) return;
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !meta.hasDisplayName()) return;
-        if (!ChatColor.stripColor(meta.getDisplayName()).equalsIgnoreCase("Frasco de XP")) return;
+        if (!meta.getDisplayName().equals(getMessage("bottle-displayname"))) return;
 
         int xpAmount = 0;
         if (meta.hasLore()) {
+            String valuePrefix = ChatColor.stripColor(getMessage("bottle-lore-value").split("%amount%")[0]);
+
+            for (String line : meta.getLore()) {
+                if (ChatColor.stripColor(line).startsWith(valuePrefix)) {
+                    String numberStr = ChatColor.stripColor(line).replace(valuePrefix, "").trim();
+                    xpAmount = Integer.parseInt(numberStr);
+                }
+            }
+
+            /* Old Code Lines!
             for (String line : meta.getLore()) {
                 String plain = ChatColor.stripColor(line);
                 if (plain.startsWith("Quantia armazenada:")) {
@@ -395,7 +424,7 @@ public final class vExp extends JavaPlugin implements Listener, CommandExecutor 
                         break;
                     } catch (NumberFormatException ignored) {}
                 }
-            }
+            } */
         }
 
         event.setCancelled(true);
@@ -434,7 +463,7 @@ public final class vExp extends JavaPlugin implements Listener, CommandExecutor 
         }
 
         if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() &&
-                item.getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Frasco de XP")) {
+                item.getItemMeta().getDisplayName().equals(getMessage("bottle-displayname"))) {
             return;
         }
 
@@ -449,5 +478,25 @@ public final class vExp extends JavaPlugin implements Listener, CommandExecutor 
         }
 
         player.giveExp(xpToGive);
+    }
+
+    @EventHandler
+    public void onPlayerDeathPermission(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        if (!player.hasPermission("vexp.safexp")) return;
+        event.setKeepLevel(true);
+        event.setDroppedExp(0);
+    }
+
+    @EventHandler
+    public void onPlayerDeathWorld(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        String worldName = player.getWorld().getName();
+        List<String> safeWorlds = getConfig().getStringList("worlds");
+
+        if (safeWorlds.contains(worldName)) {
+            event.setKeepLevel(true);
+            event.setDroppedExp(0);
+        }
     }
 }

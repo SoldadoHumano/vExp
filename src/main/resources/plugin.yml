@@ -1,5 +1,5 @@
 name: vExp
-version: '1.0'
+version: '2.0'
 main: com.vitor.vExp
 api-version: '1.8'
 authors: [ vitor1227_OP ]
@@ -11,6 +11,7 @@ commands:
     description: Crie um frasco de XP com a quantidade desejada.
     usage: /frasco <quantidade>
     permission: vexp.use
+    aliases: bottle
 
 permissions:
   vexp.use:
@@ -18,5 +19,8 @@ permissions:
     default: true
   vexp.staff:
     description: Permissão de givar XP.
+    default: false
+  vexp.safexp:
+    description: Players com essa permissão não perderão XP ao morrer.
     default: false
 
